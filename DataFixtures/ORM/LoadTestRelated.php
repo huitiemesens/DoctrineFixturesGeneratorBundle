@@ -10,7 +10,7 @@ use Webonaute\DoctrineFixturesGeneratorBundle\Entity\TestRelated;
 class LoadTestRelated extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {
@@ -18,7 +18,7 @@ class LoadTestRelated extends AbstractFixture implements OrderedFixtureInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
