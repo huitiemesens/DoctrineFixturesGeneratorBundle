@@ -26,7 +26,6 @@ use Webonaute\DoctrineFixturesGeneratorBundle\Tool\FixtureGenerator;
  */
 class DoctrineFixtureGenerator extends Generator
 {
-
     /**
      * @var Filesystem
      */
@@ -38,7 +37,7 @@ class DoctrineFixtureGenerator extends Generator
     private $registry;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param Filesystem        $filesystem
      * @param RegistryInterface $registry
@@ -50,7 +49,7 @@ class DoctrineFixtureGenerator extends Generator
     }
 
     /**
-     * Generate Fixture from bundle name, entity name, fixture name and ids
+     * Generate Fixture from bundle name, entity name, fixture name and ids.
      *
      * @param BundleInterface $bundle
      * @param string          $entity
@@ -63,15 +62,15 @@ class DoctrineFixtureGenerator extends Generator
         $config = $this->registry->getManager(null)->getConfiguration();
         $config->setEntityNamespaces(
             array_merge(
-                array($bundle->getName() => $bundle->getNamespace() . '\\Entity'),
+                [$bundle->getName() => $bundle->getNamespace().'\\Entity'],
                 $config->getEntityNamespaces()
             )
         );
 
         $fixtureFileName = $this->getFixtureFileName($entity, $name, $ids);
 
-        $entityClass = $this->registry->getAliasNamespace($bundle->getName()) . '\\' . $entity;
-        $fixturePath = $bundle->getPath() . '/DataFixtures/ORM/' . $fixtureFileName . '.php';
+        $entityClass = $this->registry->getAliasNamespace($bundle->getName()).'\\'.$entity;
+        $fixturePath = $bundle->getPath().'/DataFixtures/ORM/'.$fixtureFileName.'.php';
         $bundleNameSpace = $bundle->getNamespace();
         if (file_exists($fixturePath)) {
             throw new \RuntimeException(sprintf('Fixture "%s" already exists.', $fixtureFileName));
@@ -88,9 +87,9 @@ class DoctrineFixtureGenerator extends Generator
         $em = $this->registry->getManager();
 
         $repo = $em->getRepository($class->rootEntityName);
-        if (empty($ids)){
+        if (empty($ids)) {
             $items = $repo->findAll();
-        }else{
+        } else {
             $items = $repo->findById($ids);
         }
 
@@ -100,11 +99,10 @@ class DoctrineFixtureGenerator extends Generator
 
         $this->filesystem->mkdir(dirname($fixturePath));
         file_put_contents($fixturePath, $fixtureCode);
-
     }
 
     /**
-     * Return fixture file name
+     * Return fixture file name.
      *
      * @param       $entity
      * @param       $name
@@ -114,8 +112,7 @@ class DoctrineFixtureGenerator extends Generator
      */
     public function getFixtureFileName($entity, $name, array $ids)
     {
-
-        $fixtureFileName = "Load";
+        $fixtureFileName = 'Load';
         //if name params is set.
         if (strlen($name) > 0) {
             $fixtureFileName .= ucfirst($name);
@@ -138,7 +135,7 @@ class DoctrineFixtureGenerator extends Generator
     }
 
     /**
-     * Return the fixture generator object
+     * Return the fixture generator object.
      *
      * @return FixtureGenerator
      */
@@ -146,7 +143,7 @@ class DoctrineFixtureGenerator extends Generator
     {
         $fixtureGenerator = new FixtureGenerator();
         $fixtureGenerator->setNumSpaces(4);
+
         return $fixtureGenerator;
     }
-
 }

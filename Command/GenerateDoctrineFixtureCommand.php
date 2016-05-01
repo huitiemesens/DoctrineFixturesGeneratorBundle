@@ -28,12 +28,11 @@ use Webonaute\DoctrineFixturesGeneratorBundle\Generator\DoctrineFixtureGenerator
  */
 class GenerateDoctrineFixtureCommand extends GenerateDoctrineCommand
 {
-
     protected function configure()
     {
         $this
             ->setName('doctrine:generate:fixture')
-            ->setAliases(array('generate:doctrine:fixture'))
+            ->setAliases(['generate:doctrine:fixture'])
             ->setDescription('Generates a new Doctrine entity fixture inside a bundle from existing data.')
             ->addOption(
                 'entity',
@@ -125,7 +124,7 @@ EOT
 
         $output->writeln('Generating the fixture code: <info>OK</info>');
 
-        $dialog->writeGeneratorSummary($output, array());
+        $dialog->writeGeneratorSummary($output, []);
 
         //all fine.
         return 0;
@@ -154,14 +153,14 @@ EOT
 
         // namespace
         $output->writeln(
-            array(
+            [
                 '',
                 'This command helps you generate Doctrine2 fixture.',
                 '',
                 'First, you need to give the entity name you want to generate fixture from.',
                 'You must use the shortcut notation like <comment>AcmeBlogBundle:Post</comment>.',
-                ''
-            )
+                '',
+            ]
         );
 
         /** @var Kernel $kernel */
@@ -172,14 +171,13 @@ EOT
             $entity = $dialog->askAndValidate(
                 $output,
                 $dialog->getQuestion('The Entity shortcut name', $input->getOption('entity')),
-                array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateEntityName'),
+                ['Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateEntityName'],
                 false,
                 $input->getOption('entity'),
                 $bundleNames
             );
 
             list($bundle, $entity) = $this->parseShortcutNotation($entity);
-
 
             try {
                 /** @var Kernel $kernel */
@@ -188,17 +186,16 @@ EOT
                 $b = $kernel->getBundle($bundle);
                 try {
                     //check if entity exist in the selected bundle.
-                    $entityObject = $this->getContainer()->get("doctrine")->getManager()->getRepository($bundle . ":" . $entity);
+                    $entityObject = $this->getContainer()->get('doctrine')->getManager()->getRepository($bundle.':'.$entity);
                     break;
                 } catch (\Exception $e) {
                     $output->writeln(sprintf('<bg=red>Entity "%s" does not exist.</>', $entity));
                 }
-
             } catch (\Exception $e) {
                 $output->writeln(sprintf('<bg=red>Bundle "%s" does not exist.</>', $bundle));
             }
         }
-        $input->setOption('entity', $bundle . ':' . $entity);
+        $input->setOption('entity', $bundle.':'.$entity);
 
         // ids
         $input->setOption('ids', $this->addIds($input, $output, $dialog));
@@ -210,14 +207,14 @@ EOT
 
         // summary
         $output->writeln(
-            array(
+            [
                 '',
                 $this->getHelper('formatter')->formatBlock('Summary before generation', 'bg=blue;fg=white', true),
                 '',
-                sprintf("You are going to generate  \"<info>%s:%s</info>\" fixtures", $bundle, $entity),
-                sprintf("using the \"<info>%s</info>\" ids.", $count),
+                sprintf('You are going to generate  "<info>%s:%s</info>" fixtures', $bundle, $entity),
+                sprintf('using the "<info>%s</info>" ids.', $count),
                 '',
-            )
+            ]
         );
     }
 
@@ -273,7 +270,6 @@ EOT
     {
         $name = $input->getOption('name');
 
-
         //should ask for the name.
         $output->writeln('');
 
@@ -281,7 +277,7 @@ EOT
             $output,
             $dialog->getQuestion('Fixture name', null),
             function ($name) use ($input) {
-                if ($name == "" && count($input->getOption('ids')) > 1) {
+                if ($name == '' && count($input->getOption('ids')) > 1) {
                     throw new \InvalidArgumentException('Name is require when using multiple IDs.');
                 }
 
@@ -289,7 +285,7 @@ EOT
             }
         );
 
-        if ($name == ""){
+        if ($name == '') {
             //use default name.
             $name = null;
         }
@@ -306,7 +302,7 @@ EOT
      */
     private function parseIds($input)
     {
-        $ids = array();
+        $ids = [];
 
         if (is_array($input)) {
             return $input;

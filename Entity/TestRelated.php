@@ -2,18 +2,16 @@
 
 namespace Webonaute\DoctrineFixturesGeneratorBundle\Entity;
 
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * TestRelated
+ * TestRelated.
  *
  * @ORM\Table(name="wbnt_dfgb_testrelated")
  * @ORM\Entity()
  */
 class TestRelated
 {
-
     /**
      * @var int
      * @ORM\Id
@@ -44,6 +42,7 @@ class TestRelated
     public function setId($id)
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -63,7 +62,7 @@ class TestRelated
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
-
 }
